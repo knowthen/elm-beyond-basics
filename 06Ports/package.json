@@ -1,0 +1,18 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "clear": "0.0.1",
+    "gulp": "^3.9.1",
+    "gutil": "^1.6.4",
+    "st": "^1.1.0"
+  }
+}

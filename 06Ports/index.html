@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ports - Customer List</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+  <div></div>
+  <script src="bundle.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+  <script src="appfb.js"></script>
+  <script>
+    var app = Elm.Main.fullscreen();
+    app.ports.addCustomer.subscribe(function(customerName){
+      console.log(customerName);
+      addCustomer({name: customerName})
+        .then(function(response){
+          console.log("Saved!");
+          app.ports.customerSaved.send(response.key);
+        }, function(err){
+          console.log("error:", err);
+        });
+    });
+    var listener = customerListener();
+    listener.on("child_added", function(data){
+      var customer = Object.assign({id: data.key}, data.val());
+      app.ports.newCustomer.send(customer);
+    });
+  </script>
+</body>
+
+</html>
