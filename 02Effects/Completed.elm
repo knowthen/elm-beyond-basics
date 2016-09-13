@@ -1,9 +1,26 @@
-module Main exposing (..)
+module Completed exposing (..)
 
 import Html exposing (..)
+import Html.Events exposing (..)
 import Html.App as App
 import Http
 import Task
+
+
+randomJoke : Cmd Msg
+randomJoke =
+    let
+        url =
+            "http://api.icndb.com/jokes/random"
+
+        task =
+            Http.getString url
+
+        cmd =
+            Task.perform Fail Joke task
+    in
+        cmd
+
 
 
 -- model
@@ -23,21 +40,6 @@ init =
     ( initModel, randomJoke )
 
 
-randomJoke : Cmd Msg
-randomJoke =
-    let
-        url =
-            "http://api.icndb.com/jokes/random"
-
-        task =
-            Http.getString url
-
-        cmd =
-            Task.perform Fail Joke task
-    in
-        cmd
-
-
 
 -- update
 
@@ -45,6 +47,7 @@ randomJoke =
 type Msg
     = Joke String
     | Fail Http.Error
+    | NewJoke
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -56,6 +59,9 @@ update msg model =
         Fail error ->
             ( (toString error), Cmd.none )
 
+        NewJoke ->
+            ( "fetching joke ...", randomJoke )
+
 
 
 -- view
@@ -63,7 +69,11 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [] [ text model ]
+    div []
+        [ button [ onClick NewJoke ] [ text "Fetch a Joke" ]
+        , br [] []
+        , text model
+        ]
 
 
 
@@ -78,11 +88,11 @@ subscriptions model =
 
 -- main : Program Never
 -- main =
---App.beginnerProgram
---    { model = initModel
---    , update = update
---    , view = view
---    }
+--     App.beginnerProgram
+--         { model = initModel
+--         , update = update
+--         , view = view
+--         }
 
 
 main : Program Never
