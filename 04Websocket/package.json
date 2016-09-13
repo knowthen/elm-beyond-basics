@@ -1,0 +1,18 @@
+{
+  "name": "04Websocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dateformat": "^1.0.12",
+    "rx": "^4.1.0",
+    "ws": "^1.1.1"
+  }
+}
