@@ -2,9 +2,7 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (..)
-import Html.App as App
 import Http
-import Task
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline exposing (decode, required, optional)
 
@@ -14,41 +12,6 @@ type alias Response =
     , joke : String
     , categories : List String
     }
-
-
-
--- responseDecoder : Decoder Response
--- responseDecoder =
---     object3 Response
---         ("id" := int)
---         ("joke" := string)
---         ("categories" := list string)
---         |> at [ "value" ]
-
-
-responseDecoder : Decoder Response
-responseDecoder =
-    decode Response
-        |> required "id" int
-        |> required "joke" string
-        |> optional "categories" (list string) []
-        |> at [ "value" ]
-
-
-randomJoke : Cmd Msg
-randomJoke =
-    let
-        url =
-            "http://api.icndb.com/jokes/random"
-
-        task =
-            -- Http.getString url
-            Http.get responseDecoder url
-
-        cmd =
-            Task.perform Fail Joke task
-    in
-        cmd
 
 
 
@@ -70,23 +33,57 @@ init =
 
 
 
+-- responseDecoder : Decoder Response
+-- responseDecoder =
+--     map3 Response
+--         (field "id" int)
+--         (field "joke" string)
+--         (field "categories" (list string))
+--         |> at [ "value" ]
+
+
+responseDecoder : Decoder Response
+responseDecoder =
+    decode Response
+        |> required "id" int
+        |> required "joke" string
+        |> optional "categories" (list string) []
+        |> at [ "value" ]
+
+
+randomJoke : Cmd Msg
+randomJoke =
+    let
+        url =
+            "http://api.icndb.com/jokes/random"
+
+        request =
+            -- Http.getString url
+            Http.get url responseDecoder
+
+        cmd =
+            Http.send Joke request
+    in
+        cmd
+
+
+
 -- update
 
 
 type Msg
-    = Joke Response
-    | Fail Http.Error
+    = Joke (Result Http.Error Response)
     | NewJoke
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Joke response ->
+        Joke (Ok response) ->
             ( toString (response.id) ++ " " ++ response.joke, Cmd.none )
 
-        Fail error ->
-            ( (toString error), Cmd.none )
+        Joke (Err err) ->
+            ( (toString err), Cmd.none )
 
         NewJoke ->
             ( "fetching joke ...", randomJoke )
@@ -114,9 +111,9 @@ subscriptions model =
     Sub.none
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Html.program
         { init = init
         , update = update
         , view = view
