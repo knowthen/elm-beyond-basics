@@ -2,7 +2,9 @@
 This repo is the source companion to the following course on Learning Elmlang:
 http://courses.knowthen.com/courses/elm-beyond-the-basics
 
-This course teaches the new Elmlang developer who knows how to make basic apps that just run in the browser, how to make more apps.
+This course teaches the new [Elmlang](http://elm-lang.org/) developer who knows how to make basic apps that just run in the browser, how to make more apps.
+
+## Updated to Elm 0.18
 
 #### Why you should take this course?
 
