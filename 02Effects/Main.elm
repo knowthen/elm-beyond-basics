@@ -1,9 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.App as App
 import Http
-import Task
 
 
 -- model
@@ -29,11 +27,11 @@ randomJoke =
         url =
             "http://api.icndb.com/jokes/random"
 
-        task =
+        request =
             Http.getString url
 
         cmd =
-            Task.perform Fail Joke task
+            Http.send Joke request
     in
         cmd
 
@@ -43,18 +41,17 @@ randomJoke =
 
 
 type Msg
-    = Joke String
-    | Fail Http.Error
+    = Joke (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Joke joke ->
+        Joke (Ok joke) ->
             ( joke, Cmd.none )
 
-        Fail error ->
-            ( (toString error), Cmd.none )
+        Joke (Err err) ->
+            ( (toString err), Cmd.none )
 
 
 
@@ -75,19 +72,9 @@ subscriptions model =
     Sub.none
 
 
-
--- main : Program Never
--- main =
---App.beginnerProgram
---    { model = initModel
---    , update = update
---    , view = view
---    }
-
-
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Html.program
         { init = init
         , update = update
         , view = view
