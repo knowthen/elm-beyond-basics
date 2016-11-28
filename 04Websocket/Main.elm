@@ -2,7 +2,6 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (..)
-import Html.App as App
 import WebSocket exposing (..)
 import Json.Decode exposing (..)
 
@@ -105,9 +104,9 @@ subscriptions model =
         Sub.none
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Html.program
         { init = init
         , update = update
         , view = view
