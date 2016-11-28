@@ -3,7 +3,6 @@ module Login exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as App
 
 
 -- model
@@ -51,30 +50,27 @@ view model =
         [ h3 [] [ text "Login Page... So far" ]
         , Html.form []
             [ input
-                [ type' "text"
+                [ type_ "text"
                 , onInput UsernameInput
                 , placeholder "username"
                 ]
                 []
             , input
-                [ type' "password"
+                [ type_ "password"
                 , onInput PasswordInput
                 , placeholder "password"
                 ]
                 []
-            , input [ type' "submit" ]
+            , input [ type_ "submit" ]
                 [ text "Login" ]
             ]
-        , hr [] []
-        , h4 [] [ text "Login Model:" ]
-        , p [] [ text <| toString model ]
         ]
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.beginnerProgram
+    Html.beginnerProgram
         { model = initModel
-        , view = view
         , update = update
+        , view = view
         }
