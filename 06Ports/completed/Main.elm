@@ -3,7 +3,6 @@ port module Main exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as App
 
 
 -- model
@@ -104,9 +103,9 @@ viewCustomers customers =
 viewCustomerForm : Model -> Html Msg
 viewCustomerForm model =
     Html.form [ onSubmit SaveCustomer ]
-        [ input [ type' "text", onInput NameInput, value model.name ] []
+        [ input [ type_ "text", onInput NameInput, value model.name ] []
         , text <| Maybe.withDefault "" model.error
-        , button [ type' "submit" ] [ text "Save" ]
+        , button [ type_ "submit" ] [ text "Save" ]
         ]
 
 
@@ -148,9 +147,9 @@ port deleteCustomer : Customer -> Cmd msg
 port customerDeleted : (String -> msg) -> Sub msg
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Html.program
         { init = init
         , update = update
         , view = view
