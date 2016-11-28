@@ -3,7 +3,6 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import Html.App as App
 import Login
 import LeaderBoard
 
@@ -72,11 +71,11 @@ view model =
         page =
             case model.page of
                 LeaderBoardPage ->
-                    App.map LeaderBoardMsg
+                    Html.map LeaderBoardMsg
                         (LeaderBoard.view model.leaderBoard)
 
                 LoginPage ->
-                    App.map LoginMsg
+                    Html.map LoginMsg
                         (Login.view model.login)
     in
         div []
@@ -95,16 +94,13 @@ view model =
                 ]
             , hr [] []
             , page
-            , hr [] []
-            , h4 [] [ text "App Model:" ]
-            , p [] [ text <| toString model ]
             ]
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.beginnerProgram
+    Html.beginnerProgram
         { model = initModel
-        , view = view
         , update = update
+        , view = view
         }

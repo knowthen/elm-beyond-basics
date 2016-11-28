@@ -50,19 +50,16 @@ view model =
         [ h3 [] [ text "Login Page... So far" ]
         , Html.form []
             [ input
-                [ type' "text"
+                [ type_ "text"
                 , onInput UsernameInput
                 , placeholder "username"
                 ]
                 []
             , input
-                [ type' "password"
+                [ type_ "password"
                 , onInput PasswordInput
                 , placeholder "password"
                 ]
                 []
             ]
-        , hr [] []
-        , h4 [] [ text "Login Model:" ]
-        , p [] [ text <| toString model ]
         ]

@@ -52,13 +52,10 @@ view model =
     div []
         [ h3 [] [ text "Leaderboard page... So far" ]
         , input
-            [ type' "text"
+            [ type_ "text"
             , onInput QueryInput
             , value model.query
             , placeholder "Search for a runner..."
             ]
             []
-        , hr [] []
-        , h4 [] [ text "Leaderboard Model:" ]
-        , p [] [ text <| toString model ]
         ]
