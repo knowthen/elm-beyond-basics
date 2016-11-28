@@ -3,7 +3,6 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Navigation exposing (..)
-import String
 
 
 -- model
@@ -27,9 +26,13 @@ initModel page =
     }
 
 
-init : Page -> ( Model, Cmd Msg )
-init page =
-    ( initModel page, Cmd.none )
+init : Location -> ( Model, Cmd Msg )
+init location =
+    let
+        page =
+            hashToPage location.hash
+    in
+        ( initModel page, Cmd.none )
 
 
 
@@ -38,34 +41,17 @@ init page =
 
 type Msg
     = Navigate Page
-
-
-toHash : Page -> String
-toHash page =
-    case page of
-        LeaderBoard ->
-            "#"
-
-        AddRunner ->
-            "#add"
-
-        Login ->
-            "#login"
-
-        NotFound ->
-            "#notfound"
+    | ChangePage Page
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Navigate page ->
-            ( model, newUrl (toHash page) )
+            ( model, newUrl <| pageToHash page )
 
-
-urlUpdate : Page -> Model -> ( Model, Cmd Msg )
-urlUpdate page model =
-    ( { model | page = page }, Cmd.none )
+        ChangePage page ->
+            ( { model | page = page }, Cmd.none )
 
 
 
@@ -127,46 +113,50 @@ subscriptions model =
     Sub.none
 
 
-locationParser : Location -> Page
-locationParser location =
-    let
-        _ =
-            Debug.log "location: " location
+pageToHash : Page -> String
+pageToHash page =
+    case page of
+        LeaderBoard ->
+            "#"
 
-        hash =
-            (String.dropLeft 1 location.hash)
-    in
-        case hash of
-            "" ->
-                LeaderBoard
+        AddRunner ->
+            "#add"
 
-            "add" ->
-                AddRunner
+        Login ->
+            "#login"
 
-            "login" ->
-                Login
-
-            _ ->
-                NotFound
+        NotFound ->
+            "#notfound"
 
 
-main : Program Never
+hashToPage : String -> Page
+hashToPage hash =
+    case hash of
+        "" ->
+            LeaderBoard
+
+        "#add" ->
+            AddRunner
+
+        "#login" ->
+            Login
+
+        _ ->
+            NotFound
+
+
+locationToMsg : Location -> Msg
+locationToMsg location =
+    location.hash
+        |> hashToPage
+        |> ChangePage
+
+
+main : Program Never Model Msg
 main =
-    -- App.program
-    --     { init = init
-    --     , update = update
-    --     , view = view
-    --     , subscriptions = subscriptions
-    --     }
-    Navigation.program (makeParser locationParser)
-        -- TODO: make locationParser
-        { init =
-            init
-            -- TODO: change init into a function
+    Navigation.program locationToMsg
+        { init = init
         , update = update
         , view = view
         , subscriptions = subscriptions
-        , urlUpdate =
-            urlUpdate
-            -- TODO: create a urlUpdate function
         }
