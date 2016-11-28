@@ -1,0 +1,42 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "argv": "0.0.2",
+    "bluebird": "^3.4.1",
+    "dotenv": "^2.0.0",
+    "faye-websocket": "^0.11.0",
+    "joi": "^8.0.5",
+    "jsonwebtoken": "^6.2.0",
+    "koa": "^1.2.0",
+    "koa-body": "^1.4.0",
+    "koa-cors": "0.0.16",
+    "koa-router": "^5.4.0",
+    "koa-websocket": "^1.1.0",
+    "lodash": "^4.13.1",
+    "minimist": "^1.2.0",
+    "ms": "^0.7.1",
+    "nedb": "^1.8.0",
+    "optimist": "^0.6.1",
+    "pubsub-js": "^1.5.3",
+    "random-js": "^1.0.8",
+    "rethinkdbdash": "^2.3.6",
+    "yargs": "^4.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^8.0.0",
+    "eslint-plugin-import": "^1.6.1",
+    "eslint-plugin-jsx-a11y": "^1.0.4",
+    "eslint-plugin-react": "^5.0.1"
+  }
+}
