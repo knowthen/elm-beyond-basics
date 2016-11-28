@@ -1,6 +1,5 @@
 elm-stuff
 node_modules
-dist
 .DS_Store
 bundle.js
 app.css.map
