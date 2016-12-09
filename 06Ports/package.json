@@ -12,7 +12,7 @@
   "devDependencies": {
     "clear": "0.0.1",
     "gulp": "^3.9.1",
-    "gutil": "^1.6.4",
+    "gulp-util": "^3.0.7",
     "st": "^1.1.0"
   }
 }
